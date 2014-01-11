@@ -1,4 +1,4 @@
-package jgame;
+package space;
 
 import static util.JGameConstants.*;
 
