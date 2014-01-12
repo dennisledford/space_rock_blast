@@ -77,9 +77,6 @@ public class EnemyArmy {
 		}
 	}
 
-	private void buryEnemy(Enemy enemy) {
-		enemies.remove(enemy);
-	}
 
 	// TODO fix this to be better
 	public void buryEnemies() {
