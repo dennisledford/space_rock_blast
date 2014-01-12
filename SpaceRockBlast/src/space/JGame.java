@@ -23,7 +23,8 @@ public class JGame {
 	private long lastFrame;
 	Player player = null;
 	Enemy enemy =null;
-	List<Bullet> bullets = null;	
+	List<Bullet> bullets = null;
+	List<Integer> cleanUpBullets = null;
 	
 	public JGame(){		
 		
@@ -100,9 +101,12 @@ public class JGame {
 								bullet.setHeight(0);
 								bullet.setWidth(0);
 							}
-						}
-						
+						}else{
+							cleanUpBullets.add(bullets.indexOf(bullet));							
+						}						
 				}
+				cleanUp();
+				System.out.println(bullets.size());
 				enemy.update(delta, 0);
 				enemy.draw();
 				break;
@@ -167,7 +171,7 @@ public class JGame {
 			        	
 			        	}
 			        	if(Keyboard.getEventKey()==Keyboard.KEY_SPACE && Keyboard.getEventKeyState()){
-			        		Bullet bullet = new Bullet(player.getX(),player.getY(),4,4, player.getShipRotate());
+			        		Bullet bullet = new Bullet(player.getX(),player.getY(),4,4, player.getShipRotate(),bullets.size());
 			        		bullet.setSpeed(10);
 			        		bullets.add(bullet);
 			        	}
@@ -188,7 +192,15 @@ public class JGame {
 		bullets = new ArrayList<Bullet>();		
 		enemy = new Enemy(500,400,20,20,0);
 		enemy.randomizeColors();
-				
+		cleanUpBullets = new ArrayList<Integer>();		
 	}
 
+	
+	private void cleanUp(){
+		for(int pos : cleanUpBullets){
+			bullets.remove(pos);
+		}
+		cleanUpBullets.clear();
+		
+	}
 }

@@ -11,6 +11,16 @@ public class Bullet extends AbstractMoveableEntity{
 	
 	protected double rotate = 0;
 	
+	protected int id;
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public double getRotate() {
 		return rotate;
 	}
@@ -19,8 +29,9 @@ public class Bullet extends AbstractMoveableEntity{
 		this.rotate = rotate;
 	}
 
-	public Bullet(double x, double y, double width, double height, double rotate) {
+	public Bullet(double x, double y, double width, double height, double rotate, int id) {
 		super(x, y, width, height);
+		this.id = id+1;
 		// TODO Auto-generated constructor stub
 		this.rotate = rotate;
 	}
@@ -60,6 +71,13 @@ public class Bullet extends AbstractMoveableEntity{
 		//GL11.glTranslated(-DISPLAYWIDTH,-DISPLAYHEIGHT, 0);
 		GL11.glPopMatrix();
 				
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+	    if(!(o instanceof Bullet)) return false;
+	    Bullet other = (Bullet) o;
+	    return (this.x == other.getX() && this.y == other.getY() && this.id == other.getId());
 	}
 
 		
