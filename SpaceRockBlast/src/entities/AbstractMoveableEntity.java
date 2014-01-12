@@ -40,15 +40,15 @@ public abstract class AbstractMoveableEntity extends AbstractEntity implements
 	}
 
 	protected void checkBounds() {
-		if (this.x > ((DISPLAYWIDTH) + (PLAYERWIDTH / 2))) {
-			this.x = (-(PLAYERWIDTH / 2));
-		} else if (this.x < (-(PLAYERWIDTH / 2))) {
-			this.x = ((DISPLAYWIDTH) + (PLAYERWIDTH / 2));
+		if (this.x > ((DISPLAYWIDTH) + (this.getWidth() / 2))) {
+			this.x = (-(this.getWidth() / 2));
+		} else if (this.x < (-(this.getWidth() / 2))) {
+			this.x = ((DISPLAYWIDTH) + (this.getWidth() / 2));
 		}
-		if (this.y > ((DISPLAYHEIGHT) + (PLAYERHEIGHT / 2))) {
-			this.y = (-(PLAYERHEIGHT / 2));
-		} else if (this.y < (-(PLAYERHEIGHT / 2))) {
-			this.y = ((DISPLAYHEIGHT) + (PLAYERHEIGHT / 2));
+		if (this.y > ((DISPLAYHEIGHT) + (this.getHeight() / 2))) {
+			this.y = (-(this.getHeight() / 2));
+		} else if (this.y < (-(this.getHeight() / 2))) {
+			this.y = ((DISPLAYHEIGHT) + (this.getHeight() / 2));
 		}
 	}
 
