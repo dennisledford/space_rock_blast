@@ -11,7 +11,7 @@ import util.JGameConstants;
 import util.TimeHelper;
 
 /**
- * @author phesto
+ * @author dennisledford
  * 
  */
 public class EnemyArmy {

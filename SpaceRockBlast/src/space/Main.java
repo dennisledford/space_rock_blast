@@ -4,7 +4,7 @@
 package space;
 
 /**
- * @author phesto
+ * @author dennisledford
  * 
  */
 public class Main {

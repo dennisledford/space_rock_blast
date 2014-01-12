@@ -6,7 +6,7 @@ package util;
 import org.lwjgl.Sys;
 
 /**
- * @author phesto
+ * @author dennisledford
  * 
  */
 public class TimeHelper {
