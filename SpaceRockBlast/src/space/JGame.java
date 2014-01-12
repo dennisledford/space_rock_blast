@@ -2,29 +2,25 @@ package space;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.*;
 import org.lwjgl.*;
 
-import entities.AbstractMoveableEntity;
-import entities.Entity;
-import entities.MoveableEntity;
-
 import util.State;
+import util.TimeHelper;
 import static util.JGameConstants.*;
 
 public class JGame {	
-	
+	//TODO: objects can't exist in same spot - increase collision dectection
 	private State state = State.INTRO;
 	private DisplayMode displayMode = new DisplayMode(DISPLAYWIDTH,DISPLAYHEIGHT);
-	private long lastFrame;
 	Player player = null;
-	Enemy enemy =null;
 	List<Bullet> bullets = null;
-	List<Integer> cleanUpBullets = null;
+	List<Bullet> cleanUpBullets = null;
+	EnemyArmy enemyArmy;
+	TimeHelper timeHelper;
 	
 	public JGame(){		
 		
@@ -47,8 +43,8 @@ public class JGame {
 		GL11.glOrtho(0,DISPLAYWIDTH,DISPLAYHEIGHT,0,1,-1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);		
 		
-		lastFrame = getTime();
-	
+		timeHelper = new TimeHelper();
+		
 		while(!Display.isCloseRequested()){
 			//render			
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
@@ -60,16 +56,7 @@ public class JGame {
 		Display.destroy();
 	}
 	
-	private long getTime(){
-		return ( (Sys.getTime()*1000) / Sys.getTimerResolution());
-	}
 	
-	private int getDelta(){
-		long currentTime = getTime();
-		int delta = (int) (currentTime - lastFrame);
-		lastFrame = currentTime;
-		return delta;
-	}
 	
 	private void render(){
 		switch(state){
@@ -87,28 +74,30 @@ public class JGame {
 			}
 			case GAME:
 			{
-				int delta = getDelta();				
+				int delta = timeHelper.getDelta();				
 				player.randomizeColors();
         		player.update(delta,player.getTravelRotate());
-				player.draw();			
-				for(Bullet bullet: bullets){						
-						if(bullet.onScreen()){
-							bullet.update(delta,bullet.getRotate());
-							bullet.draw();		
-							if(bullet.intersects(enemy)){
-								System.out.println("HIT");
-								enemy.destory();
-								bullet.setHeight(0);
-								bullet.setWidth(0);
-							}
-						}else{
-							cleanUpBullets.add(bullets.indexOf(bullet));							
-						}						
+				player.draw();
+				enemyArmy.enlistEnemy();
+				for(Enemy enemy : enemyArmy.getEnemies()){
+					for(Bullet bullet: bullets){						
+							if(bullet.onScreen()){
+								bullet.update(delta,bullet.getRotate());
+								bullet.draw();		
+								if(bullet.intersects(enemy)){
+									System.out.println("HIT");
+									enemy.destory();
+									bullet.setHeight(0);
+									bullet.setWidth(0);
+								}
+							}else{
+								cleanUpBullets.add(bullet);							
+							}						
+					}
 				}
-				cleanUp();
-				System.out.println(bullets.size());
-				enemy.update(delta, 0);
-				enemy.draw();
+				cleanUp();				
+				enemyArmy.drawEnemies(delta);
+				
 				break;
 			}
 			default:
@@ -190,17 +179,22 @@ public class JGame {
 	private void init(){
 		player = new Player(STARTX, STARTY,PLAYERWIDTH,PLAYERHEIGHT);
 		bullets = new ArrayList<Bullet>();		
-		enemy = new Enemy(500,400,20,20,0);
-		enemy.randomizeColors();
-		cleanUpBullets = new ArrayList<Integer>();		
+		cleanUpBullets = new ArrayList<Bullet>();	
+		enemyArmy = new EnemyArmy();
 	}
 
-	
+	//TODO fix this to be better
 	private void cleanUp(){
-		for(int pos : cleanUpBullets){
-			bullets.remove(pos);
+		enemyArmy.buryEnemies();
+		for(Bullet bullet : cleanUpBullets){
+			try{
+				if(bullets!=null && bullets.size()>0){
+					bullets.remove(bullet);
+				}
+			}catch(Exception e){
+				System.out.println("What happened here?");
+			}
 		}
-		cleanUpBullets.clear();
-		
+		cleanUpBullets.clear();		
 	}
 }
