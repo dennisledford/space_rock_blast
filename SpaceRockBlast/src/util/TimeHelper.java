@@ -7,16 +7,16 @@ import org.lwjgl.Sys;
 
 /**
  * @author phesto
- *
+ * 
  */
 public class TimeHelper {
 
 	private long lastFrame;
-	
-	public TimeHelper(){
+
+	public TimeHelper() {
 		this.lastFrame = getTime();
 	}
-	
+
 	public long getLastFrame() {
 		return lastFrame;
 	}
@@ -25,11 +25,11 @@ public class TimeHelper {
 		this.lastFrame = lastFrame;
 	}
 
-	public long getTime(){
-		return ( (Sys.getTime()*1000) / Sys.getTimerResolution());
+	public long getTime() {
+		return ((Sys.getTime() * 1000) / Sys.getTimerResolution());
 	}
-	
-	public int getDelta(){
+
+	public int getDelta() {
 		long currentTime = getTime();
 		int delta = (int) (currentTime - lastFrame);
 		lastFrame = currentTime;
