@@ -32,6 +32,7 @@ public class Bullet extends AbstractMoveableEntity{
 	public Bullet(double x, double y, double width, double height, double rotate, int id) {
 		super(x, y, width, height);
 		this.id = id+1;
+		this.speed = .5f;
 		// TODO Auto-generated constructor stub
 		this.rotate = rotate;
 	}

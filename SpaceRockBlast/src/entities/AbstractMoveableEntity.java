@@ -36,8 +36,8 @@ public abstract class AbstractMoveableEntity extends AbstractEntity implements M
 	@Override
 	public void update(int delta, double rotate) {
 		checkBounds();
-		this.x += Math.cos(Math.toRadians(rotate)) * speed;
-		this.y += Math.sin(Math.toRadians(rotate)) * speed;		
+		this.x += Math.cos(Math.toRadians(rotate)) * delta * speed;
+		this.y += Math.sin(Math.toRadians(rotate)) * delta * speed;
 	}
 	
 	protected void checkBounds(){				

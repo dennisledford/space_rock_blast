@@ -79,20 +79,28 @@ public class JGame {
         		player.update(delta,player.getTravelRotate());
 				player.draw();
 				enemyArmy.enlistEnemy();
-				for(Enemy enemy : enemyArmy.getEnemies()){
-					for(Bullet bullet: bullets){						
-							if(bullet.onScreen()){
-								bullet.update(delta,bullet.getRotate());
-								bullet.draw();		
+				for(Bullet bullet: bullets){						
+						if(bullet.onScreen()){
+							bullet.update(delta,bullet.getRotate());
+							bullet.draw();
+							for(Enemy enemy : enemyArmy.getEnemies()){
 								if(bullet.intersects(enemy)){
 									System.out.println("HIT");
 									enemy.destory();
 									bullet.setHeight(0);
 									bullet.setWidth(0);
 								}
-							}else{
-								cleanUpBullets.add(bullet);							
-							}						
+								
+							}
+						}else{
+							cleanUpBullets.add(bullet);							
+						}						
+				}
+				for(Enemy enemy : enemyArmy.getEnemies()){
+					if(!enemy.isDead()){
+						if(player.intersects(enemy)){
+							System.out.println("DEAD");
+						}
 					}
 				}
 				cleanUp();				
@@ -141,12 +149,12 @@ public class JGame {
 					while(Keyboard.next()){
 			        	if(Keyboard.getEventKey()==Keyboard.KEY_UP && Keyboard.getEventKeyState()){	        		
 			        		//player.setAcceleration(player.getAcceleration()+.1);
-			        		player.setSpeed(player.getSpeed()+1.02);
+			        		player.setSpeed(player.getSpeed()+.102);
 			        		player.setTravelRotate(player.getShipRotate());			        		
 			        	}
 			        	if(Keyboard.getEventKey()==Keyboard.KEY_DOWN && Keyboard.getEventKeyState()){
 			        		player.setAcceleration(player.getAcceleration()-.083);
-			        		player.setSpeed(player.getSpeed()-.83);
+			        		player.setSpeed(player.getSpeed()-.083);
 			        		
 			        	}
 			        	if(Keyboard.getEventKey()==Keyboard.KEY_RIGHT && Keyboard.getEventKeyState()){
@@ -160,8 +168,7 @@ public class JGame {
 			        	
 			        	}
 			        	if(Keyboard.getEventKey()==Keyboard.KEY_SPACE && Keyboard.getEventKeyState()){
-			        		Bullet bullet = new Bullet(player.getX(),player.getY(),4,4, player.getShipRotate(),bullets.size());
-			        		bullet.setSpeed(10);
+			        	    Bullet bullet = new Bullet(player.getX(),player.getY(),4,4, player.getShipRotate(),bullets.size());			        		
 			        		bullets.add(bullet);
 			        	}
 			        }
@@ -177,6 +184,7 @@ public class JGame {
 	}
 	
 	private void init(){
+		Keyboard.enableRepeatEvents(true);
 		player = new Player(STARTX, STARTY,PLAYERWIDTH,PLAYERHEIGHT);
 		bullets = new ArrayList<Bullet>();		
 		cleanUpBullets = new ArrayList<Bullet>();	
