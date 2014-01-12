@@ -46,6 +46,7 @@ public class Enemy extends AbstractMoveableEntity {
 		// TODO Auto-generated constructor stub
 		this.rotate = rotate;
 		randomizeColors();
+		this.speed = .1f;
 		this.dead = false;
 	}
 

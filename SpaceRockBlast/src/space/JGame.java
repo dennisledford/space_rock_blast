@@ -142,7 +142,9 @@ public class JGame {
 					if (Keyboard.getEventKey() == Keyboard.KEY_UP
 							&& Keyboard.getEventKeyState()) {
 						// player.setAcceleration(player.getAcceleration()+.1);
-						player.setSpeed(player.getSpeed() + .102);
+						if(player.getShipRotate()==player.getTravelRotate()){
+							player.setSpeed(player.getSpeed() + .102);
+						}
 						player.setTravelRotate(player.getShipRotate());
 					}
 					if (Keyboard.getEventKey() == Keyboard.KEY_DOWN

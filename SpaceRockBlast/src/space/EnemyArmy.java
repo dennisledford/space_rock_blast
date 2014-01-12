@@ -45,10 +45,13 @@ public class EnemyArmy {
 		this.enemies = enemies;
 	}
 
+	//TODO:rework enlisting enemy
 	public void enlistEnemy() {
 		if (allowEnlist()) {
 			this.lastEnemyCreateTime = (int) enemyTimeHelper.getTime();
-			Enemy enemy = new Enemy(0, 0, 20, 20, 0);
+			Random randomGenerator = new Random();
+			double rotate = randomGenerator.nextFloat()*360;
+			Enemy enemy = new Enemy(0, 0, 30, 30, rotate);
 			enemy.setId(enemies.size() + 1);
 			enemy = setRecruitPosition(enemy);
 			enemies.add(enemy);
@@ -58,8 +61,14 @@ public class EnemyArmy {
 
 	private Enemy setRecruitPosition(Enemy enemy) {
 		Random randomGenerator = new Random();
-		enemy.setX(randomGenerator.nextFloat() * JGameConstants.DISPLAYWIDTH);
-		enemy.setY(randomGenerator.nextFloat() * JGameConstants.DISPLAYHEIGHT);
+		if(randomGenerator.nextBoolean()){
+			enemy.setX(randomGenerator.nextFloat() * (JGameConstants.DISPLAYWIDTH+10));
+			enemy.setY(-10);
+		}else{
+			enemy.setX(-10);
+			enemy.setY(randomGenerator.nextFloat() * (JGameConstants.DISPLAYHEIGHT+10));
+		}
+		
 		return enemy;
 	}
 
@@ -72,7 +81,7 @@ public class EnemyArmy {
 
 	public void drawEnemies(int delta) {
 		for (Enemy enemy : enemies) {
-			enemy.update(delta, 0);
+			enemy.update(delta, enemy.getRotate());
 			enemy.draw();
 		}
 	}
