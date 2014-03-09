@@ -13,6 +13,7 @@ public class Player extends AbstractMoveableEntity {
 	protected double shipRotate = 0;
 	protected double acceleration = 0.0000001;
 	protected double xForce, yForce;
+	protected Long score;
 
 	public double getAcceleration() {
 		return acceleration;
